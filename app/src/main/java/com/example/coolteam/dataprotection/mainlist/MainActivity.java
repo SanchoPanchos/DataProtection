@@ -2,33 +2,29 @@ package com.example.coolteam.dataprotection.mainlist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.coolteam.dataprotection.R;
-import com.example.coolteam.dataprotection.model.Transaction;
+import com.example.coolteam.dataprotection.fragments.TransactionsListFragment;
 
-import java.util.List;
-
-
-public class MainActivity extends AppCompatActivity implements MainListContract.View{
-
-    MainListContract.Presenter presenter;
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter = new MainListPresenter(this);
-        presenter.onLoadTransactions();
+        init();
     }
 
-    @Override
-    public void onTransactionsLoaded(List<Transaction> transactions) {
-        Log.i("TAG", transactions.get(0).getLocation());
-    }
+    private void init(){
+        if (findViewById(R.id.transactions_fragment_container) != null) {
+//            if (savedInstanceState != null) {
+//                return;
+//            }
 
-    @Override
-    public void onTransactionsLoadFailed(String message) {
+            TransactionsListFragment transactionsListFragment = new TransactionsListFragment();
 
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.transactions_fragment_container, transactionsListFragment).commit();
+        }
     }
 }

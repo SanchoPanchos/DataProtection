@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Data Protection</string>
+
+    <!--Transaction properties -->
+    <string name="id">Id: %1$d</string>
+    <string name="date">Date: %1$d</string>
+    <string name="requester">Requester: %1$s</string>
+    <string name="location">Location: %1$s</string>
+    <string name="status">Status: %1$s</string>
+    <string name="transactionCode">Transaction code: %1$s</string>
+    <string name="description">Description: %1$s</string>
 </resources>
