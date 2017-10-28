@@ -37,5 +37,5 @@ public class Constants {
                 .build().create(TransactionAPI.class);
     }
 
-    public static String BASE_URL = "https://protection-information.herokuapp.com";
+    private static String BASE_URL = "https://protection-information.herokuapp.com";
 }

@@ -3,8 +3,6 @@ package com.example.coolteam.dataprotection.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Timestamp;
-
 public class Transaction {
 
     @SerializedName("id")
