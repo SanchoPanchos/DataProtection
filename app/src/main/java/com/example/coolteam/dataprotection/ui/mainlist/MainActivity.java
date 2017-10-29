@@ -1,10 +1,10 @@
-package com.example.coolteam.dataprotection.mainlist;
+package com.example.coolteam.dataprotection.ui.mainlist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.coolteam.dataprotection.R;
-import com.example.coolteam.dataprotection.fragments.TransactionsListFragment;
+import com.example.coolteam.dataprotection.ui.fragments.TransactionsListFragment;
 
 public class MainActivity extends AppCompatActivity{
 

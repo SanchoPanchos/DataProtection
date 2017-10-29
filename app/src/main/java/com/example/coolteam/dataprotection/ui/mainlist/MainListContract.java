@@ -1,4 +1,4 @@
-package com.example.coolteam.dataprotection.mainlist;
+package com.example.coolteam.dataprotection.ui.mainlist;
 
 import com.example.coolteam.dataprotection.model.Transaction;
 

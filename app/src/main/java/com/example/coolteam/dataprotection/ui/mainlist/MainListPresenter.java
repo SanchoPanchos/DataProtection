@@ -1,9 +1,9 @@
-package com.example.coolteam.dataprotection.mainlist;
+package com.example.coolteam.dataprotection.ui.mainlist;
 
 
 import com.example.coolteam.dataprotection.model.Callback;
 import com.example.coolteam.dataprotection.model.Transaction;
-import com.example.coolteam.dataprotection.model.TransactionManager;
+import com.example.coolteam.dataprotection.model.source.remote.TransactionManager;
 
 import java.util.List;
 

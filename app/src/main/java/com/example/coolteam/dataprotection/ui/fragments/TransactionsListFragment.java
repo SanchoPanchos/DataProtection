@@ -1,4 +1,4 @@
-package com.example.coolteam.dataprotection.fragments;
+package com.example.coolteam.dataprotection.ui.fragments;
 
 
 import android.content.Context;
@@ -13,9 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.coolteam.dataprotection.R;
-import com.example.coolteam.dataprotection.adapters.TransactionAdapter;
-import com.example.coolteam.dataprotection.mainlist.MainListContract;
-import com.example.coolteam.dataprotection.mainlist.MainListPresenter;
+import com.example.coolteam.dataprotection.ui.adapters.TransactionAdapter;
+import com.example.coolteam.dataprotection.ui.mainlist.MainListContract;
+import com.example.coolteam.dataprotection.ui.mainlist.MainListPresenter;
 import com.example.coolteam.dataprotection.model.Transaction;
 
 import java.util.List;

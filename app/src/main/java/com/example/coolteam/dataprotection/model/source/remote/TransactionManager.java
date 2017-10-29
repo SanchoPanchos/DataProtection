@@ -1,6 +1,8 @@
-package com.example.coolteam.dataprotection.model;
+package com.example.coolteam.dataprotection.model.source.remote;
 
 import com.example.coolteam.dataprotection.Constants;
+import com.example.coolteam.dataprotection.model.Callback;
+import com.example.coolteam.dataprotection.model.Transaction;
 
 import java.util.List;
 

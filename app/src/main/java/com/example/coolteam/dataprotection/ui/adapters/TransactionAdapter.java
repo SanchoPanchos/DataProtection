@@ -1,4 +1,4 @@
-package com.example.coolteam.dataprotection.adapters;
+package com.example.coolteam.dataprotection.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;

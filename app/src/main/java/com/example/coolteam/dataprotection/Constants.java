@@ -1,6 +1,6 @@
 package com.example.coolteam.dataprotection;
 
-import com.example.coolteam.dataprotection.model.TransactionAPI;
+import com.example.coolteam.dataprotection.model.source.remote.TransactionAPI;
 
 import java.io.IOException;
 
