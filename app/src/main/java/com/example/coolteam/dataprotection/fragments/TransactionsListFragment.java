@@ -50,8 +50,6 @@ public class TransactionsListFragment extends Fragment implements MainListContra
         presenter = new MainListPresenter(this);
         presenter.onLoadTransactions();
 
-        //FloatingActionButton addBtn = (Button)
-
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
