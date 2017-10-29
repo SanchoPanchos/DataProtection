@@ -9,4 +9,13 @@
     <string name="status">Status: %1$s</string>
     <string name="transactionCode">Transaction code: %1$s</string>
     <string name="description">Description: %1$s</string>
+
+    <!--Transaction form -->
+    <string name="new_transaction">New transaction</string>
+    <string name="requesterHint">Requester</string>
+    <string name="locationHint">Location</string>
+    <string name="requesterLogoHint">Requester Logo</string>
+    <string name="descriptionHint">Description</string>
+    <string name="addRequesterLogoHint">Add requester logo:</string>
+    <string name="create_new_transaction">Create</string>
 </resources>
