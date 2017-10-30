@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.coolteam.dataprotection.R;
@@ -20,7 +19,7 @@ import com.example.coolteam.dataprotection.ui.adapters.TransactionAdapter;
 import com.example.coolteam.dataprotection.ui.mainlist.MainListContract;
 import com.example.coolteam.dataprotection.ui.mainlist.MainListPresenter;
 import com.example.coolteam.dataprotection.model.Transaction;
-import com.example.coolteam.dataprotection.transactionform.TransactionFormActivity;
+import com.example.coolteam.dataprotection.ui.addtransaction.AddTransactionActivity;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class TransactionsListFragment extends Fragment implements MainListContra
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TransactionFormActivity.class);
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 startActivity(intent);
             }
         });

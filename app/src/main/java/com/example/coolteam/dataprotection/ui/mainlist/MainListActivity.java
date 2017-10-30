@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.example.coolteam.dataprotection.R;
 import com.example.coolteam.dataprotection.ui.fragments.TransactionsListFragment;
 
-public class MainActivity extends AppCompatActivity{
+public class MainListActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

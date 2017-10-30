@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.mainlist.MainActivity">
+        <activity android:name=".ui.mainlist.MainListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".transactionform.TransactionFormActivity"></activity>
+        <activity android:name=".ui.addtransaction.AddTransactionActivity"></activity>
     </application>
 
 </manifest>
