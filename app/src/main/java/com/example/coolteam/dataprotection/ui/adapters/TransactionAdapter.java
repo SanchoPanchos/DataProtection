@@ -48,6 +48,7 @@ public class TransactionAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -66,6 +67,15 @@ public class TransactionAdapter extends BaseAdapter {
         return view;
     }
 
+ //TO DO
+   // public void deleteItem(int position){}
+ /*
+    public void addItem(String requester,String location, String description )
+    {
+        Transaction newTransaction = new Transaction(111, 12434,requester,location,"STATUS","transactionCode",description,"requesterLogo");
+
+    }
+*/
     Transaction getTransaction(int position) {
         return ((Transaction) getItem(position));
     }
