@@ -1,21 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@android:drawable/alert_light_frame"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_weight="0"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/transaction_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="3dp"
+            android:autoSizeMaxTextSize="18dp"
+            android:text="Requester"
+            android:textSize="15sp"></TextView>
 
         <TextView
             android:id="@+id/transaction_requester"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Requester">
-        </TextView>
-        <TextView
-            android:id="@+id/transaction_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Requester">
-        </TextView>
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="3dp"
+            android:text="Requester"
+            android:textSize="15sp"></TextView>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <ImageButton
+        android:id="@+id/btn_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
 
 </LinearLayout>

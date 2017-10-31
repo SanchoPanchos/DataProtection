@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.addtransaction.AddTransactionActivity">
+    tools:context="com.example.coolteam.dataprotection.transactionform.TransactionFormActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                 android:textSize="18sp"
                 android:layout_gravity="center"/>
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/requester_logo"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -80,30 +80,29 @@
 
         <EditText
             android:id="@+id/description"
-            android:layout_below="@+id/requester_logo_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_alignStart="@+id/requester_logo_ll"
+            android:layout_below="@+id/requester_logo_ll"
+            android:layout_marginTop="12dp"
             android:hint="@string/descriptionHint"
+            android:inputType="textMultiLine"
             android:lines="3"
-            android:maxLines="10"
-            android:inputType="textMultiLine" />
+            android:maxLines="10" />
 
         <Button
             android:id="@+id/add_new_transaction"
-            android:layout_below="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="50dp"
+            android:layout_below="@+id/description"
             android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
             android:background="@color/colorAccent"
-            android:textColor="#fff"
+            android:onClick="onClick_Save"
             android:text="@string/create_new_transaction"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="#fff" />
 
     </RelativeLayout>
 
