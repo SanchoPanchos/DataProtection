@@ -1,7 +1,5 @@
 package com.example.coolteam.dataprotection.ui.fragments;
 
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,15 +26,12 @@ import butterknife.ButterKnife;
 
 public class TransactionsListFragment extends Fragment implements MainListContract.View {
 
-    MainListContract.Presenter presenter;
-
-    private Context context;
+    private MainListContract.Presenter presenter;
     private View view;
 
-    TransactionAdapter transactionAdapter;
+    @BindView(R.id.add_button) FloatingActionButton addBtn;
 
-    @BindView(R.id.add_button)
-    FloatingActionButton addBtn;
+    @BindView(R.id.transactions_list) ListView transactionsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,7 +39,7 @@ public class TransactionsListFragment extends Fragment implements MainListContra
         view = inflater.inflate(R.layout.fragment_transactions_list, container, false);
 
         ButterKnife.bind(this, view);
-        context = this.getContext();
+
 
         presenter = new MainListPresenter(this);
         presenter.onLoadTransactions();
@@ -80,12 +75,7 @@ public class TransactionsListFragment extends Fragment implements MainListContra
 
     @Override
     public void onTransactionsLoaded(List<Transaction> transactions) {
-        Log.i("TAG", transactions.get(0).getLocation());
-
-        transactionAdapter = new TransactionAdapter(context, transactions);
-
-        ListView transactionsList = (ListView) view.findViewById(R.id.transactions_list);
-        transactionsList.setAdapter(transactionAdapter);
+        transactionsList.setAdapter(new TransactionAdapter(this.getActivity(), transactions));
 
         transactionsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override

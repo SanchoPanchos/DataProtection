@@ -1,5 +1,6 @@
 package com.example.coolteam.dataprotection.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -11,26 +12,28 @@ import android.widget.TextView;
 import com.example.coolteam.dataprotection.R;
 import com.example.coolteam.dataprotection.model.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TransactionAdapter extends BaseAdapter {
-    Context ctx;
-    LayoutInflater lInflater;
-    List<Transaction> objects;
+    private Activity activity;
+    private LayoutInflater lInflater;
+    private List<Transaction> objects;
+    private List<View> views;
 
     @BindView(R.id.transaction_requester)
     TextView requesterTV;
     @BindView(R.id.transaction_location)
     TextView locationTV;
 
-    public TransactionAdapter(Context context, List<Transaction> transactions) {
-        ctx = context;
+    public TransactionAdapter(Activity activity, List<Transaction> transactions) {
+        this.activity = activity;
         objects = transactions;
-        lInflater = (LayoutInflater) ctx
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        views = new ArrayList<>();
+        lInflater = activity.getLayoutInflater();
     }
 
     @Override
@@ -50,23 +53,22 @@ public class TransactionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            view = lInflater.inflate(R.layout.transaction_item, parent, false);
+        try{
+            return views.get(position);
+        }catch (IndexOutOfBoundsException e){
+            convertView = lInflater.inflate(R.layout.transaction_item, null, true);
+            ButterKnife.bind(this, convertView);
+
+            Transaction transaction = objects.get(position);
+
+            Resources res = convertView.getResources();
+            requesterTV.setText(res.getString(R.string.requester, transaction.getRequester()));
+            locationTV.setText(res.getString(R.string.location, transaction.getLocation()));
+
+            return convertView;
         }
 
-        ButterKnife.bind(this, view);
 
-        Transaction transaction = getTransaction(position);
-
-        Resources res = view.getResources();
-        requesterTV.setText(res.getString(R.string.requester, transaction.getRequester()));
-        locationTV.setText(res.getString(R.string.location, transaction.getLocation()));
-
-        return view;
     }
 
-    Transaction getTransaction(int position) {
-        return ((Transaction) getItem(position));
-    }
 }
