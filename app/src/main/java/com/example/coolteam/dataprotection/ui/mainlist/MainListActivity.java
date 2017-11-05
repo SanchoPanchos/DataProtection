@@ -11,7 +11,7 @@ public class MainListActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_list);
         init();
     }
 
@@ -20,9 +20,7 @@ public class MainListActivity extends AppCompatActivity{
 //            if (savedInstanceState != null) {
 //                return;
 //            }
-
             TransactionsListFragment transactionsListFragment = new TransactionsListFragment();
-
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.transactions_fragment_container, transactionsListFragment).commit();
         }

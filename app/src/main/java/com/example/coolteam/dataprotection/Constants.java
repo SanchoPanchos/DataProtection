@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Constants {
 
     public static final int CHOOSE_PICTURE = 101;
+    public static final int IMAGES_MAX_SIZE = 500;
 
     private static OkHttpClient.Builder getBuilder() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

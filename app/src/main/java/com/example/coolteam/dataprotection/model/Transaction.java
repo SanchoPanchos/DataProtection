@@ -1,53 +1,64 @@
 package com.example.coolteam.dataprotection.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Random;
 
-public class Transaction implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Transaction extends RealmObject implements Serializable {
+
+    @PrimaryKey
     @SerializedName("id")
-    @Expose
     private int id;
 
+//    private Date date;
+//
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
+
     @SerializedName("date")
-    @Expose
-    private long date;
+    private long dateLong;
 
     @SerializedName("requester")
-    @Expose
     private String requester;
 
     @SerializedName("location")
-    @Expose
     private String location;
 
     @SerializedName("status")
-    @Expose
     private String status;
 
     @SerializedName("transactionCode")
-    @Expose
     private String transactionCode;
 
     @SerializedName("description")
-    @Expose
     private String description;
 
     @SerializedName("requesterLogo")
-    @Expose
     private String requesterLogo;
 
-    public Transaction(int id, long date, String requester, String location, String status, String transactionCode, String description, String requesterLogo) {
-        this.id = id;
-        this.date = date;
+    public Transaction(long dateLong, String requester, String location, String status, String transactionCode, String description, String requesterLogo) {
+        this.id = new Random().nextInt(1000000000);
+        this.dateLong = dateLong;
+        //this.date = new Date(dateLong);
         this.requester = requester;
         this.location = location;
         this.status = status;
         this.transactionCode = transactionCode;
         this.description = description;
         this.requesterLogo = requesterLogo;
+    }
+
+    public Transaction(){
+
     }
 
     public int getId() {
@@ -58,12 +69,12 @@ public class Transaction implements Serializable {
         this.id = id;
     }
 
-    public long getDate() {
-        return date;
+    public long getDateLong() {
+        return dateLong;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setDateLong(long dateLong) {
+        this.dateLong = dateLong;
     }
 
     public String getRequester() {

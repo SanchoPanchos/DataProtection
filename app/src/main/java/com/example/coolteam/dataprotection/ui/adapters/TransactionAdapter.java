@@ -1,73 +1,102 @@
 package com.example.coolteam.dataprotection.ui.adapters;
 
-import android.app.Activity;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.example.coolteam.dataprotection.ConstantFunctions;
 import com.example.coolteam.dataprotection.R;
+import com.example.coolteam.dataprotection.model.AdapterCallback;
+import com.example.coolteam.dataprotection.model.AdapterDeleteCallback;
+import com.example.coolteam.dataprotection.model.GlideApp;
 import com.example.coolteam.dataprotection.model.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
 
-public class TransactionAdapter extends BaseAdapter {
-    private Activity activity;
-    private LayoutInflater lInflater;
-    private List<Transaction> objects;
-    private List<View> views;
+    private List<Transaction> transactions;
+    private AdapterCallback callback;
 
-    @BindView(R.id.transaction_requester)
-    TextView requesterTV;
-    @BindView(R.id.transaction_location)
-    TextView locationTV;
-
-    public TransactionAdapter(Activity activity, List<Transaction> transactions) {
-        this.activity = activity;
-        objects = transactions;
-        views = new ArrayList<>();
-        lInflater = activity.getLayoutInflater();
+    public TransactionAdapter(List<Transaction> transactions, AdapterCallback callback) {
+        this.transactions = transactions;
+        this.callback = callback;
     }
 
     @Override
-    public int getCount() {
-        return objects.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_item, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public Object getItem(int position) {
-        return objects.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.date.setText("Date:" + transactions.get(position).getDateLong());
+        holder.requster.setText("Requester:" + transactions.get(position).getRequester());
+        GlideApp.with(holder.itemView).asBitmap().error(R.drawable.img_small).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                holder.image.setImageBitmap(ConstantFunctions.getCircleBitmap(resource));
+                return true;
+            }
+        }).load(transactions.get(position).getRequesterLogo()).into(holder.image);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemCount() {
+        return transactions.size();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        try{
-            return views.get(position);
-        }catch (IndexOutOfBoundsException e){
-            convertView = lInflater.inflate(R.layout.transaction_item, null, true);
-            ButterKnife.bind(this, convertView);
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
 
-            Transaction transaction = objects.get(position);
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-            Resources res = convertView.getResources();
-            requesterTV.setText(res.getString(R.string.requester, transaction.getRequester()));
-            locationTV.setText(res.getString(R.string.location, transaction.getLocation()));
+        private TextView requster;
+        private TextView date;
+        private ImageView image;
 
-            return convertView;
+        ViewHolder(View itemView) {
+            super(itemView);
+            requster = itemView.findViewById(R.id.transaction_card_requester);
+            date = itemView.findViewById(R.id.transaction_card_date);
+            image = itemView.findViewById(R.id.transaction_card_image);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
+        @Override
+        public void onClick(View view) {
+            callback.onClick(getLayoutPosition());
+        }
 
+        @Override
+        public boolean onLongClick(View view) {
+            callback.onLongClick(getLayoutPosition(), new AdapterDeleteCallback(){
+                @Override
+                public void onDeleteItem(int position) {
+                    transactions.remove(position);
+                }
+            });
+            return true;
+        }
     }
 
 }

@@ -1,39 +1,31 @@
 package com.example.coolteam.dataprotection.ui.fragments;
 
-
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.coolteam.dataprotection.R;
+import com.example.coolteam.dataprotection.model.AdapterCallback;
+import com.example.coolteam.dataprotection.model.AdapterDeleteCallback;
 import com.example.coolteam.dataprotection.ui.adapters.TransactionAdapter;
-import com.example.coolteam.dataprotection.ui.mainlist.MainActivity;
+import com.example.coolteam.dataprotection.ui.addtransaction.AddTransactionActivity;
 import com.example.coolteam.dataprotection.ui.mainlist.MainListContract;
 import com.example.coolteam.dataprotection.ui.mainlist.MainListPresenter;
 import com.example.coolteam.dataprotection.model.Transaction;
-import com.example.coolteam.dataprotection.transactionform.TransactionFormActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,25 +33,29 @@ import butterknife.ButterKnife;
 
 public class TransactionsListFragment extends Fragment implements MainListContract.View {
 
-    MainListContract.Presenter presenter;
+    @BindView(R.id.transactions_list) RecyclerView transactionsList;
+    @BindView(R.id.add_button) FloatingActionButton addBtn;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
 
-    private Context context;
-    private View view;
-
-
-    TransactionAdapter transactionAdapter;
-
-    @BindView(R.id.add_button)
-    FloatingActionButton addBtn;
-
+    private MainListContract.Presenter presenter;
+    private TransactionAdapter transactionAdapter;
+    private ProgressDialog dialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_transactions_list, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_transactions_list, container, false);
         ButterKnife.bind(this, view);
-        context = this.getContext();
+        dialog = new ProgressDialog(getActivity());
+        dialog.setCancelable(false);
+        dialog.setTitle("Please wait");
+        dialog.setMessage("Loading transactions...");
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.onLoadTransactions();
+            }
+        });
 
         presenter = new MainListPresenter(this);
         presenter.onLoadTransactions();
@@ -67,19 +63,14 @@ public class TransactionsListFragment extends Fragment implements MainListContra
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TransactionFormActivity.class);
+                Intent intent = new Intent(getActivity(), AddTransactionActivity.class);
                 startActivity(intent);
             }
         });
-
-
         return view;
     }
 
     private void onTransactionSelected(Transaction transactionSelected) {
-
-
-        hideButtons();
         TransactionDetailsFragment newFragment = new TransactionDetailsFragment();
 
         Bundle args = addInfoAboutTransactionToBundle(transactionSelected);
@@ -92,50 +83,6 @@ public class TransactionsListFragment extends Fragment implements MainListContra
 
     }
 
-
-    //MENU
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-
-     super.onCreateContextMenu(menu,v,menuInfo);
-        menu.add(Menu.NONE, 0, Menu.NONE, "Edit");
-        menu.add(Menu.NONE, 1, Menu.NONE, "Remove");
-    }
-
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-       // Log.v("","Position" +transactionsList.getId());
-        switch (item.getItemId()) {
-            case 0:
-               // doEdit();
-
-                return true;
-            case 1:
-
-                transactionAdapter.getItem(info.position);
-                //  doDelete();
-                transactionAdapter.notifyDataSetChanged();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-
-    private void hideButtons()
-    {
-        ImageButton button_del = (ImageButton) view.findViewById(R.id.btn_delete);
-        ImageButton button_ed = (ImageButton) view.findViewById(R.id.btn_edit);
-
-        button_del.setVisibility(View.GONE);
-
-        button_ed.setVisibility(View.GONE);
-    }
-    ///////////////
-
     private Bundle addInfoAboutTransactionToBundle(Transaction transactionSelected){
         Bundle args = new Bundle();
         args.putSerializable(TransactionDetailsFragment.TRANSACTION, transactionSelected);
@@ -143,39 +90,65 @@ public class TransactionsListFragment extends Fragment implements MainListContra
     }
 
     @Override
-    public void onTransactionsLoaded(List<Transaction> transactions) {
-        Log.i("TAG", transactions.get(0).getLocation());
-
-        transactionAdapter = new TransactionAdapter(this.getActivity(), transactions);
-
-        final ListView transactionsList = (ListView) view.findViewById(R.id.transactions_list);
-        transactionsList.setAdapter(transactionAdapter);
-
-        transactionsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+    public void onTransactionsLoaded(final List<Transaction> transactions) {
+        transactionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        transactionAdapter = new TransactionAdapter(transactions, new AdapterCallback() {
             @Override
-            public void onItemClick(AdapterView<?>adapter,View v, int position, long arg){
-                Transaction transaction = (Transaction) adapter.getItemAtPosition(position);
-                onTransactionSelected(transaction);
+            public void onClick(int position) {
+               onTransactionSelected(transactions.get(position));
+            }
+
+            @Override
+            public void onLongClick(final int position, final AdapterDeleteCallback callback) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setItems(new String[]{"Edit"
+                        , "Delete"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                            case 1:
+                                presenter.onDeleteTransaction(transactions.get(position).getId());
+                                callback.onDeleteItem(position);
+                                transactionAdapter.notifyItemRemoved(position);
+                                transactionAdapter.notifyItemRangeChanged(position, transactions.size()-1);
+                                transactionsList.setAdapter(transactionAdapter);
+                                break;
+                        }
+                    }
+                });
+                builder.show();
             }
         });
-        registerForContextMenu(transactionsList);
+        transactionsList.setAdapter(transactionAdapter);
 
-// LONG TAP
-        /*
-        transactionsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
-            @Override
-            public boolean onItemLongClick(AdapterView<?>adapter,View v, int position, long arg){
-                Transaction transaction = (Transaction) adapter.getItemAtPosition(position);
-                Log.v("","Tap");
-                return onTransactionLongTap(position, transactionsList);
 
-            }
-        }); */
     }
 
     @Override
     public void onTransactionsLoadFailed(String message) {
         Log.e("TAG", message);
+    }
+
+    @Override
+    public void onTransactionDeleted() {
+
+    }
+
+    @Override
+    public void onTransactionNotDeleted(String error) {
+
+    }
+
+    @Override
+    public void showDialog() {
+        dialog.show();
+    }
+
+    @Override
+    public void hideDialog() {
+        dialog.hide();
+        swipeRefresh.setRefreshing(false);
     }
 
 }

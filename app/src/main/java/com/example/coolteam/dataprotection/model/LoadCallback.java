@@ -1,7 +1,6 @@
 package com.example.coolteam.dataprotection.model;
 
-public interface Callback<T> {
-    void onLoadStarted();
+public interface LoadCallback<T> {
     void onLoaded(T data);
     void onNotLoaded(String error);
 
